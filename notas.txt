@@ -1,0 +1,18 @@
+#Medidas de pantallas#
+
+#Laptos:
+        MIN-WIDTH:769PX
+        MAX-WIDTH:1023PX
+#Tablet:
+        MIN-WIDTH:481PX
+        MAX-WIDTH:768PX
+#Mobile:
+        MIN-WIDTH:320PX
+        MAX-WIDTH:480PX
+
+#Desktop(large):
+                MIN-WIDTH:1024px
+                MAX-WIDTH:1200PX
+
+#TV/Extra Large Screens:
+                        MIN-WIDTH:1201PX
