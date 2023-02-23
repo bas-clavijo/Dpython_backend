@@ -14,4 +14,4 @@ async def root():
 
 @app.get("/git")
 async def git():
-    return {"url": "https://github.com/bas-clavijo" }
+    return {"url": "https://github.com/bas-clavijo"}
