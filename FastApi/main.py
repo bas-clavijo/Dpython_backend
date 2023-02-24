@@ -2,8 +2,6 @@
 #inicializar el modulo de FastApi
 from fastapi import FastAPI
 
-
-
 app = FastAPI() #Se crea una variable 
 
 #siempre que se quiera acceder a un servidor las funciones deben de ser asyncrona
@@ -15,3 +13,5 @@ async def root():
 @app.get("/git")
 async def git():
     return {"url": "https://github.com/bas-clavijo"}
+
+#para inicializar el servidor uvicorn main:app --reload
