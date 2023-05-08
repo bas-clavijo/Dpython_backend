@@ -5,6 +5,10 @@ from pydantic import BaseModel
 
 app = FastAPI()
 
+#Entidad user
+
+
+
 @app.get("/users")
 async def users(): 
     #creacion de usarios
