@@ -46,7 +46,15 @@ async def user(id: int):
 @app.get("/userquery/")
 async def user(id: int):
     return search_user(id)
-     
+    
+#Operacion para agregar usuarios
+@app.post("/user/")
+async def user(user: User):
+    if type(search_user(user.id)) == User:
+        return {"Error": "El usuario ya existe"}
+    else:
+        users_list.append(user)
+
     #funcion de busqueda(se puede reutilizar esta funcion en path y query)
 def search_user(id: int):
     users = filter(lambda user: user.id ==id, users_list)
