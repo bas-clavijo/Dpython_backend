@@ -41,5 +41,19 @@ async def user(id: int):
         return list(users)[0]
     except:
         return {"Error": "No se ha encontrado el usuario"}
+    
+#Utilizacion de Query
+@app.get("/userquery/")
+async def user(id: int):
+    return search_user(id)
+     
+    #funcion de busqueda(se puede reutilizar esta funcion en path y query)
+def search_user(id: int):
+    users = filter(lambda user: user.id ==id, users_list)
+    #comprobacion de si la lista esta vacia
+    try:
+        return list(users)[0]
+    except:
+        return {"Error": "No se ha encontrado el usuario"}
 
 #inicializar el servidor uvicorn users:app --reload
