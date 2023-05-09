@@ -1,9 +1,9 @@
 #creacion de api para usuarios 
-from fastapi import FastAPI, HTTPException
+from fastapi import APIRouter, HTTPException
 #definicion de entidad para el usuario
 from pydantic import BaseModel
 
-app = FastAPI()
+router = APIRouter()
 
 #Entidad user
 class User(BaseModel):
@@ -19,12 +19,12 @@ users_list = [User(id=1,name="Bastian", surname="Clavijo",url="https://github.co
               User(id=3,name="Marco", surname="Tflay", url="https://github.com/Tflay", age=17)]
 
 #Clase que esta heredando un comportamiento de basemodel
-@app.get("/users")
+@router.get("/users")
 async def users():
     return users_list
 
 #Entrada de forma manual
-@app.get("/usersjson")
+@router.get("/usersjson")
 async def usersjson(): 
     #creacion de usarios
     return [{"name": "Bastian", "surname" : "Clavijo", "url": "https://github.com/bas-clavijo", "age": 22},
@@ -33,7 +33,7 @@ async def usersjson():
 
 
 #Utilizacion del Path
-@app.get("/user/{id}")
+@router.get("/user/{id}")
 async def user(id: int):
     users = filter(lambda user: user.id ==id, users_list)
     #comprobacion de si la lista esta vacia
@@ -43,13 +43,13 @@ async def user(id: int):
         return {"Error": "No se ha encontrado el usuario"}
     
 #Utilizacion de Query
-@app.get("/userquery/")
+@router.get("/userquery/")
 async def user(id: int):
     return search_user(id)
     
 #Operacion para agregar usuarios
 #Http status code
-@app.post("/user/",response_model=User, status_code=201)
+@router.post("/user/",response_model=User, status_code=201)
 async def user(user: User):
     if type(search_user(user.id)) == User:
         raise HTTPException(status_code=404,detail="El usuario ya existe")
@@ -58,7 +58,7 @@ async def user(user: User):
         return user
 
 #Operacion para actualizar usuarios(Actualizar datos completos)
-@app.put("/user/")
+@router.put("/user/")
 async def user(user: User):
 
     found = False
@@ -73,7 +73,7 @@ async def user(user: User):
         return user
 
 #Operacion para eliminar usuarios
-@app.delete("/user/{id}")
+@router.delete("/user/{id}")
 async def user(id: int):
 
     found = False
