@@ -1,5 +1,5 @@
 #creacion de api para usuarios 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 #definicion de entidad para el usuario
 from pydantic import BaseModel
 
@@ -48,10 +48,11 @@ async def user(id: int):
     return search_user(id)
     
 #Operacion para agregar usuarios
-@app.post("/user/")
+#Http status code
+@app.post("/user/",response_model=User, status_code=201)
 async def user(user: User):
     if type(search_user(user.id)) == User:
-        return {"Error": "El usuario ya existe"}
+        raise HTTPException(status_code=404,detail="El usuario ya existe")
     else:
         users_list.append(user)
         return user
