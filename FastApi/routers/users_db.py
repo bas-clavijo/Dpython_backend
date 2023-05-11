@@ -4,9 +4,9 @@ from db.models.user import User
 from db.schemas.user import user_schema
 from db.cliente import db_cliente
 
-router = APIRouter(prefix="/userdb", 
+router = APIRouter(prefix="/userdb",
                    tags=["userdb"],
-                   responses={status.HTTP_404_NOT_FOUND:{"Message": "No encontrado"}})
+                   responses={status.HTTP_404_NOT_FOUND: {"message": "No encontrado"}})
 
 
 #Lista de usuarios
@@ -29,10 +29,11 @@ async def user(id: int):
     return search_user(id)
     
 #Operacion para agregar usuarios
-@router.post("/",response_model=User, status_code=status.HTTP_201_CREATED)
+@router.post("/", response_model=User, status_code=status.HTTP_201_CREATED)
 async def user(user: User):
-    # if type(search_user(user.id)) == User:
-    #     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="El usuario ya existe")
+    if type(search_user_by_email(user.email)) == User:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,detail="El usuario ya existe")
     
     user_dict = dict(user)
     del user_dict["id"]
@@ -43,7 +44,7 @@ async def user(user: User):
 
     return User(**new_user)
 
-#Operacion para actualizar usuarios(Actualizar datos completos)
+#Operacion para actualizar usuarios
 @router.put("/")
 async def user(user: User):
 
@@ -71,13 +72,13 @@ async def user(id: int):
     if not found:
         return{"Error": "No se ha eliminado el usuario"}
 
-#funcion de busqueda(se puede reutilizar esta funcion en path y query)
-def search_user(id: int):
-    users = filter(lambda user: user.id ==id, users_list)
-    #comprobacion de si la lista esta vacia
+#funcion de busqueda
+def search_user_by_email(email: str):
     try:
-        return list(users)[0]
+        user =  db_cliente.local.users.find_one({"email": email})
+        return User(**user_schema(user))
     except:
         return {"Error": "No se ha encontrado el usuario"}
-
-#inicializar el servidor uvicorn users:app --reload
+    
+def search_user(id:int):
+    return ""
