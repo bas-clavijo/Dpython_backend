@@ -1,6 +1,7 @@
 #creacion de api para usuarios db
 from fastapi import APIRouter, HTTPException, status
 from db.models.user import User
+from db.schemas.user import user_schema
 from db.cliente import db_cliente
 
 router = APIRouter(prefix="/userdb", 
@@ -38,11 +39,9 @@ async def user(user: User):
 
     id = db_cliente.local.users.insert_one(user_dict).inserted_id
 
-    new_user = db_cliente.local.users.find_one({"_id": id})
+    new_user = user_schema(db_cliente.local.users.find_one({"_id": id}))
 
-
-
-    return user
+    return User(**new_user)
 
 #Operacion para actualizar usuarios(Actualizar datos completos)
 @router.put("/")
