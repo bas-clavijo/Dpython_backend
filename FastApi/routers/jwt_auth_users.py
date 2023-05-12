@@ -11,7 +11,9 @@ ACCESS_TOKEN_DURATION = 1
 #openssl rand -hex 32
 SECRET = "43170cd5566b6cb9d16406397092741d0c3bcb7cc125c6aee26484771271f7a5"
 
-router = APIRouter()
+router = APIRouter(prefix="/jwtauth",
+                   tags=["jwtauth"],
+                   responses={status.HTTP_404_NOT_FOUND: {"message": "No encontrado"}})
 
 oauth2 = OAuth2PasswordBearer(tokenUrl="login")
 
